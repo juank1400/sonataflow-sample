@@ -1,0 +1,57 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Reservation Services",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/flights": {
+      "post": {
+        "operationId": "reserveFlight",
+        "summary": "Reserva un vuelo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "passengerName": { "type": "string" },
+                  "flightNumber": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vuelo reservado"
+          }
+        }
+      }
+    },
+    "/hotels": {
+      "post": {
+        "operationId": "reserveHotel",
+        "summary": "Reserva un hotel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "guestName": { "type": "string" },
+                  "hotelName": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hotel reservado"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,41 +1,21 @@
 # CNCF Workflow implementation
 
-## Implementando un workplow con SonotaFlow
+## Implementando un workflow con SonataFlow
 
-### Prerequisitos
+Este repositorio contiene una implementación de un flujo de trabajo (workflow) utilizando SonataFlow. El ejemplo principal es una saga para la reserva de un tour.
 
-Instalar:
+### Proyecto: Saga de Reserva de Tour (`tour_reservation_saga`)
 
-* Podman
-* Minikube
-* Knative
-* Knative workflow
+Este proyecto demuestra cómo orquestar servicios (vuelos, hoteles) usando el patrón de saga para garantizar la consistencia de los datos.
 
-# Crear el proyecto base
+#### Prerrequisitos
 
-```bash
-kn workflow create --name ecommerce --yaml-workflow
-```
+*   Java (versión compatible con Quarkus)
+*   Maven o Gradle
+*   Docker (o Podman) para ejecutar los servicios dependientes.
 
-> 🛠️ Creating SonataFlow project
-> Workflow file created at ./ecommerce/workflow.sw.json
-> 🎉 SonataFlow project successfully created
+#### Cómo ejecutar
 
-```bash
-kn workflow run
-````
-
-
-## Tutorial de implementación usando Python
-
-Entra en la carpeta wf-python-imp se pordrá ver un tutotial de implementación en Python leer el tutorial y ejecutar el ejemplo:
-
-```bash
-cd wf-python-imp
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python3 examples/mini_sonataflow_runner.py examples/sample-workflow.sw.yaml
-```
-
-Encontraras un `README.md` dentro de `wf-python-imp/` con más detalles.
+Para ejecutar el proyecto, navega al directorio `tour_reservation_saga` y sigue las instrucciones que encontrarás en su propio `README.md` (una vez que lo crees). Típicamente, para un proyecto Quarkus, los pasos serían:
+1.  Iniciar los servicios externos (por ejemplo, con Docker Compose).
+2.  Ejecutar la aplicación Quarkus en modo de desarrollo.

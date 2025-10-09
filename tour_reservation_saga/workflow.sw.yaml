@@ -1,0 +1,59 @@
+id: TourReservationSaga
+name: Reserva de Plan Turístico Concurrente y Compensación
+version: "1.0"
+specVersion: "0.8"
+start: ProcesoReserva
+
+# 1. Definición de Funciones (Servicios REST externos)
+# ------------------------------------------------------------------
+functions:
+# Servicio de Vuelos
+- name: reserveFlightFunction
+  operation: "openapi.json#reserveFlight" # Apunta a openapi.json y la operación reserveFlight
+# Servicio de Hoteles
+- name: reserveHotelFunction
+  operation: "openapi.json#reserveHotel" # Apunta a openapi.json y la operación reserveHotel
+
+# 2. Definición de Estados del Flujo
+# ------------------------------------------------------------------
+states:
+
+# Estado de inicio que invoca la secuencia de reservas
+- name: ProcesoReserva
+  type: inject
+  data:
+    message: "Iniciando proceso de reserva"
+  transition: ReservarVuelo
+
+# C. ESTADOS DE OPERACIÓN (Reserva de Vuelo y Hotel)
+# ------------------------------------------------------------------
+- name: ReservarVuelo
+  type: operation
+  actions:
+  - name: make_flight_reservation
+    functionRef:
+      refName: "reserveFlightFunction"
+      arguments:
+        body: # Usamos expresiones ${...} para acceder a los datos del workflow
+          passengerName: "${.tripInfo.passengerName}"
+          flightNumber: "${.tripInfo.flightNumber}"
+  transition: ReservarHotel
+      
+- name: ReservarHotel
+  type: operation
+  actions:
+  - name: make_hotel_reservation
+    functionRef:
+      refName: "reserveHotelFunction"
+      arguments:
+        body: # Usamos expresiones ${...} para acceder a los datos del workflow
+          guestName: "${.tripInfo.passengerName}"
+          hotelName: "${.tripInfo.hotelName}"
+  transition: FlujoExitoso
+
+- name: FlujoExitoso
+  type: inject
+  data:
+    status: "COMPLETED_SUCCESSFULLY" 
+    message: "Reserva completada exitosamente. Vuelo y Hotel confirmados."
+  end: true
